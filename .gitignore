@@ -2,6 +2,7 @@
 __pycache__
 venv
 env/
+ddl_scripts
 
 # OS generated files #
 ######################
