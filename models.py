@@ -30,46 +30,46 @@ def setup_db(app, database_path=database_path):
 # Colors
 # Creator
 
-# class Deck(db.Model):
-#     __tablename__ = 'decks'
+class Deck(db.Model):
+    __tablename__ = 'decks'
 
-#     id = Column(Integer, primary_key=True)
-#     title = Column(String, nullable=False)
-#     format = Column(String)
-#     colors = Column(String)
-#     creator = Column(String)
+    id = Column(Integer, primary_key=True)
+    title = Column(String, nullable=False)
+    format = Column(String)
+    colors = Column(String)
+    creator = Column(String)
 
-#     def __init__(self, title, format, colors, creator):
-#         self.title = title
-#         self.format = format
-#         self.colors = colors
-#         self.creator = creator
+    def __init__(self, title, format, colors, creator):
+        self.title = title
+        self.format = format
+        self.colors = colors
+        self.creator = creator
 
-#     def insert(self):
-#         db.session.add(self)
-#         db.session.commit()
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
 
-#     def update(self):
-#         db.session.commit()
+    def update(self):
+        db.session.commit()
 
-#     def delete(self):
-#         db.session.delete(self)
-#         db.session.commit()
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
 
-## Card Model ##
-# ID
-# Name
-# Type
-# Colors
-# CMC
+# ## Card Model ##
+# # ID
+# # Name
+# # Type
+# # Colors
+# # CMC
 
 class Card(db.Model):
     __tablename__ = 'cards'
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    type = Column(String)
+    type = Column(String, nullable=False)
     colors = Column(String)
     cmc = Column(Integer)
 
