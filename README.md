@@ -1,0 +1,1 @@
+Bookmark - Working on unit tests. May need to create a .psql file for a test db. See the Trivia API project for details. Waiting to hear if I can use code from previous projects. This would be especially helpful for request authorization. 

@@ -101,6 +101,43 @@ def create_app(test_config=None):
 
         return f'deleted card successfully: {working_card.id} - {working_card.name}'
 
+    # Error Handling
+
+    @app.error_handler(400)
+    def bad_request(error):
+        return jsonify({
+            "success": False,
+            "error": 400,
+            "message": "the client sent a bad request"
+        }), 400
+
+    # The following code was sourced from project 3 - coffee shop full stack
+    # Start Code ---
+    @app.errorhandler(401)
+    def unauthorized(error):
+        return jsonify({
+            "success": False,
+            "error": 401,
+            "message": "user is not authorized to access this resource"
+        }), 401
+
+    @app.errorhandler(404)
+    def resource_not_found(error):
+        return jsonify({
+            "success": False,
+            "error": 404,
+            "message": "resource not found"
+        }), 404
+
+    @app.errorhandler(422)
+    def unprocessable(error):
+        return jsonify({
+            "success": False,
+            "error": 422,
+            "message": "the request was unprocessable"
+        }), 422
+    # End Code ---
+
     return app
 
 
