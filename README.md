@@ -1,1 +1,1 @@
-Bookmark - Working on unit tests!
+Bookmark - Working on auth.py. Setting up the API to decode a JWT. Building the requires_auth() decorator.

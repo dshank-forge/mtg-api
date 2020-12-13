@@ -69,6 +69,38 @@ class MtgTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 422)
 
+    def test_patch_card(self):
+        colors = 'colorless'
+
+        card_json = {"colors": colors}
+        response = self.client.patch("/cards/17", json=card_json)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(colors in str(response.data))
+        self.assertTrue('updated card successfully' in str(response.data))
+
+    def test_404_patch_non_existent_card(self):
+        colors = 'white-blue-red'
+        cmc = 3
+
+        card_json = {"colors": colors, "cmc": cmc}
+        response = self.client.patch("/cards/900", json=card_json)
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_delete_card(self):
+        response = self.client.delete("/cards/1")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('deleted card successfully: 1 -' in str(response.data))
+
+    def test_404_delete_non_existent_card(self):
+        response = self.client.delete("/cards/900")
+
+        self.assertEqual(response.status_code, 404)
+
+    # TODO: Build a couple tests to test RBAC.
+
 
 if __name__ == "__main__":
     unittest.main()

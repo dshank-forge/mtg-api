@@ -65,6 +65,7 @@ def create_app(test_config=None):
     def update_card(id):
         try:
             working_card = Card.query.get(id)
+            test = working_card.id
         except Exception as e:
             print(f'There was an exception:\n{e}')
             abort(404)
@@ -137,6 +138,14 @@ def create_app(test_config=None):
             "error": 404,
             "message": "resource not found"
         }), 404
+
+    @app.errorhandler(405)
+    def method_not_allowed(error):
+        return jsonify({
+            "success": False,
+            "error": 405,
+            "message": "the request method is not allowed on this resource"
+        }), 405
 
     @app.errorhandler(422)
     def unprocessable(error):
