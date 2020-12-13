@@ -1,8 +1,10 @@
-import os
 import json
+import os
 from flask import Flask, request, abort, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+# from functools import wraps
+from flask_sqlalchemy import SQLAlchemy
+
 from models import setup_db, Deck, Card
 
 
@@ -10,7 +12,16 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)
     setup_db(app)
-    CORS(app)
+    cors = CORS(app)
+
+    # From Trivia API project
+    # @app.after_request
+    # def after_request(response):
+    #     response.headers.add('Access-Control-Allow-Headers',
+    #                          'Content-Type,Authorization,true')
+    #     response.headers.add('Access-Control-Allow-Methods',
+    #                          'GET,PATCH,POST,DELETE,OPTIONS')
+    #     return response
 
     @app.route('/')
     def greeting():
@@ -48,7 +59,7 @@ def create_app(test_config=None):
             print(e)
             abort(422)
 
-        return 'posted card successfully'
+        return jsonify('posted card successfully')
 
     @app.route('/cards/<int:id>', methods=['patch'])
     def update_card(id):
@@ -103,7 +114,7 @@ def create_app(test_config=None):
 
     # Error Handling
 
-    @app.error_handler(400)
+    @app.errorhandler(400)
     def bad_request(error):
         return jsonify({
             "success": False,
@@ -111,8 +122,6 @@ def create_app(test_config=None):
             "message": "the client sent a bad request"
         }), 400
 
-    # The following code was sourced from project 3 - coffee shop full stack
-    # Start Code ---
     @app.errorhandler(401)
     def unauthorized(error):
         return jsonify({
@@ -136,7 +145,6 @@ def create_app(test_config=None):
             "error": 422,
             "message": "the request was unprocessable"
         }), 422
-    # End Code ---
 
     return app
 
