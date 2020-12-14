@@ -41,27 +41,43 @@ class MtgTestCase(unittest.TestCase):
 
     def test_get_decks(self):
         response = self.client.get(
-            '/decks', headers={"Authorization": f"Bearer {self.mtg_publisher_jwt}"})
+            '/decks',
+            headers={
+                "Authorization":
+                f"Bearer {self.mtg_publisher_jwt}"
+            })
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
 
     def test_405_patch_decks(self):
         response = self.client.patch(
-            '/decks', headers={"Authorization": f"Bearer {self.mtg_publisher_jwt}"})
+            '/decks',
+            headers={
+                "Authorization":
+                f"Bearer {self.mtg_publisher_jwt}"
+            })
 
         self.assertEqual(response.status_code, 405)
 
     def test_get_cards(self):
         response = self.client.get(
-            '/cards', headers={"Authorization": f"Bearer {self.mtg_publisher_jwt}"})
+            '/cards',
+            headers={
+                "Authorization":
+                f"Bearer {self.mtg_publisher_jwt}"
+            })
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
 
     def test_405_delete_cards(self):
         response = self.client.delete(
-            '/cards', headers={"Authorization": f"Bearer {self.mtg_publisher_jwt}"})
+            '/cards',
+            headers={
+                "Authorization":
+                f"Bearer {self.mtg_publisher_jwt}"
+            })
 
         self.assertEqual(response.status_code, 405)
 
@@ -73,7 +89,12 @@ class MtgTestCase(unittest.TestCase):
 
         card_json = {"name": name, "type": type, "colors": colors, "cmc": cmc}
         response = self.client.post(
-            "/cards", headers={"Authorization": f"Bearer {self.mtg_publisher_jwt}"}, json=card_json)
+            "/cards",
+            headers={
+                "Authorization":
+                f"Bearer {self.mtg_publisher_jwt}"
+            },
+            json=card_json)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -87,7 +108,12 @@ class MtgTestCase(unittest.TestCase):
 
         card_json = {"name": name, "type": type, "colors": colors, "cmc": cmc}
         response = self.client.post(
-            "/cards", headers={"Authorization": f"Bearer {self.mtg_publisher_jwt}"}, json=card_json)
+            "/cards",
+            headers={
+                "Authorization":
+                f"Bearer {self.mtg_publisher_jwt}"
+            },
+            json=card_json)
 
         self.assertEqual(response.status_code, 422)
 
@@ -96,7 +122,12 @@ class MtgTestCase(unittest.TestCase):
 
         card_json = {"colors": colors}
         response = self.client.patch(
-            "/cards/17", headers={"Authorization": f"Bearer {self.mtg_publisher_jwt}"}, json=card_json)
+            "/cards/17",
+            headers={
+                "Authorization":
+                f"Bearer {self.mtg_publisher_jwt}"
+            },
+            json=card_json)
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(colors in str(response.data))
@@ -108,20 +139,33 @@ class MtgTestCase(unittest.TestCase):
 
         card_json = {"colors": colors, "cmc": cmc}
         response = self.client.patch(
-            "/cards/900", headers={"Authorization": f"Bearer {self.mtg_publisher_jwt}"}, json=card_json)
+            "/cards/900",
+            headers={
+                "Authorization":
+                f"Bearer {self.mtg_publisher_jwt}"
+            },
+            json=card_json)
 
         self.assertEqual(response.status_code, 404)
 
     def test_delete_card(self):
         response = self.client.delete(
-            "/cards/1", headers={"Authorization": f"Bearer {self.mtg_publisher_jwt}"})
+            "/cards/1",
+            headers={
+                "Authorization":
+                f"Bearer {self.mtg_publisher_jwt}"
+            })
 
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('deleted card successfully: 1 -' in str(response.data))
+        self.assertTrue('deleted card successfully:' in str(response.data))
 
     def test_404_delete_non_existent_card(self):
         response = self.client.delete(
-            "/cards/900", headers={"Authorization": f"Bearer {self.mtg_publisher_jwt}"})
+            "/cards/900",
+            headers={
+                "Authorization":
+                f"Bearer {self.mtg_publisher_jwt}"
+            })
 
         self.assertEqual(response.status_code, 404)
 
@@ -129,21 +173,32 @@ class MtgTestCase(unittest.TestCase):
 
     def test_get_decks_mtg_browser(self):
         response = self.client.get(
-            '/decks', headers={"Authorization": f"Bearer {self.mtg_browser_jwt}"})
+            '/decks',
+            headers={
+                "Authorization":
+                f"Bearer {self.mtg_browser_jwt}"
+            })
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
 
     def test_get_cards_mtg_browser(self):
         response = self.client.get(
-            '/cards', headers={"Authorization": f"Bearer {self.mtg_browser_jwt}"})
+            '/cards',
+            headers={
+                "Authorization":
+                f"Bearer {self.mtg_browser_jwt}"
+            })
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
 
     def test_401_delete_card_mtg_browser(self):
         response = self.client.delete(
-            "/cards/2", headers={"Authorization": f"Bearer {self.mtg_browser_jwt}"})
+            "/cards/2", headers={
+                "Authorization":
+                f"Bearer {self.mtg_browser_jwt}"
+            })
 
         self.assertEqual(response.status_code, 401)
 

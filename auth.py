@@ -1,13 +1,14 @@
 import json
+import os
 from flask import request, _request_ctx_stack, abort
 from functools import wraps
 from jose import jwt, exceptions
 from urllib.request import urlopen
 
-AUTH0_DOMAIN = 'goatpig.us.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'mtg'
-CLIENT_SECRET = 'oues1xfgBTGViGZTZApPnNsRNoZ59bzQX44blRAuV-apyBBWoyGTrG8TKxF2sVwD'
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
+ALGORITHMS = os.environ.get('ALGORITHMS')
+API_AUDIENCE = os.environ.get('API_AUDIENCE')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 
 # Get the JWT from the Authorization header
@@ -26,7 +27,8 @@ def get_token_auth_header():
     return token
 
 
-# The following function has been adapted from the Auth0 Docs - "Python API: Authorization" by Luciano Balmaceda
+# The following function has been adapted from the Auth0 Docs -
+# "Python API: Authorization" by Luciano Balmaceda
 # URL: https://auth0.com/docs/quickstart/backend/python/01-authorization?_ga=2.212761047.219893380.1606509180-267051542.1604770864#create-the-jwt-validation-decorator
 # Date: 12/13/2020
 
@@ -93,7 +95,8 @@ def check_permissions(permission, payload):
 
 
 # This requires_auth decorator does the following:
-# Gets the JWT from the Auth header, verifies and decodes the JWT, checks if a given permission is in the JWT payload
+# Gets the JWT from the Auth header, verifies and decodes the JWT,
+# and checks if a given permission is in the JWT payload
 
 
 def requires_auth(permission=''):

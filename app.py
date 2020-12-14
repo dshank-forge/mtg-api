@@ -15,13 +15,20 @@ def create_app(test_config=None):
     cors = CORS(app)
 
     @app.route('/')
-    @requires_auth()  # No special role is needed to access this endpoint.
+    @requires_auth()
     def greeting():
+        """Routes user to a welcome page."""
+
         return 'Welcome to Magic: The Gathering API'
 
     @app.route('/decks')
     @requires_auth('get:decks')
     def get_decks():
+        """
+        Displays all the decks. 
+        An mtg_browser or mtg_publisher role is needed.
+        """
+
         decks = Deck.query.all()
         decks_readable = [
             f'{deck.title} by {deck.creator}' for deck in decks]
@@ -31,6 +38,11 @@ def create_app(test_config=None):
     @app.route('/cards')
     @requires_auth('get:cards')
     def get_cards():
+        """
+        Displays all the cards. 
+        An mtg_browser or mtg_publisher role is needed.
+        """
+
         cards = Card.query.all()
         cards_readable = [
             f'{card.name}' for card in cards]
@@ -40,11 +52,20 @@ def create_app(test_config=None):
     @app.route('/cards', methods=['post'])
     @requires_auth('post:cards')
     def post_card():
+        """
+        Allows a user to post a new card to the database.
+
+        The user must supply a JSON body in their post request as well as a 
+        valid JWT in the header. The JSON body must contain "name" and 
+        "type", and it can optionally contain "colors" and "cmc". 
+        An mtg_publisher role is needed.
+        """
+
         data = json.loads(request.data)
-        name = data.get('name', None)
-        type = data.get('type', None)
-        colors = data.get('colors', None)
-        cmc = data.get('cmc', None)
+        name = data.get('name')
+        type = data.get('type')
+        colors = data.get('colors')
+        cmc = data.get('cmc')
 
         try:
             new_card = Card(name, type, colors, cmc)
@@ -59,6 +80,16 @@ def create_app(test_config=None):
     @app.route('/cards/<int:id>', methods=['patch'])
     @requires_auth('patch:cards')
     def update_card(id):
+        """
+        Allows a user to patch an existing card in the database.
+
+        The user must indicate which card they want to edit by providing an id. 
+        They must also supply a JSON body in their patch request as well as a 
+        valid JWT in the header. The JSON body should contain key:value pairs 
+        for the card attribtutes the user would like to update. 
+        An mtg_publisher role is needed.
+        """
+
         try:
             working_card = Card.query.get(id)
             test = working_card.id
@@ -68,10 +99,10 @@ def create_app(test_config=None):
 
         try:
             data = json.loads(request.data)
-            name = data.get('name', None)
-            type = data.get('type', None)
-            colors = data.get('colors', None)
-            cmc = data.get('cmc', None)
+            name = data.get('name')
+            type = data.get('type')
+            colors = data.get('colors')
+            cmc = data.get('cmc')
         except Exception as e:
             print(f'There was an exception:\n{e}')
             abort(400)
@@ -90,11 +121,23 @@ def create_app(test_config=None):
             print(f'There was an exception:\n{e}')
             abort(422)
 
-        return f'updated card successfully: {working_card.name} - {working_card.type} - {working_card.colors} - {working_card.cmc}'
+        return f"""
+        updated card successfully: {working_card.name} - 
+        {working_card.type} - {working_card.colors} - 
+        {working_card.cmc}
+        """
 
     @app.route('/cards/<int:id>', methods=['delete'])
     @requires_auth('delete:cards')
     def delete_card(id):
+        """
+        Allows a user to delete a card from the database.
+
+        The user must indicate which card they want to delete by providing 
+        an id. They must also supply a valid JWT in the header.
+        An mtg_publisher role is needed.
+        """
+
         try:
             working_card = Card.query.get(id)
             test = working_card.id
@@ -108,7 +151,10 @@ def create_app(test_config=None):
             print(f'There was an exception:\n{e}')
             abort(422)
 
-        return f'deleted card successfully: {working_card.id} - {working_card.name}'
+        return f"""
+        deleted card successfully: 
+        {working_card.id} - {working_card.name}
+        """
 
     # Error Handling
 

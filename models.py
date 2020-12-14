@@ -22,13 +22,6 @@ def setup_db(app, database_path=database_path):
     db.create_all()
 
 
-## Deck Model ##
-# ID
-# Title
-# Format
-# Colors
-# Creator
-
 class Deck(db.Model):
     __tablename__ = 'decks'
 
@@ -55,13 +48,6 @@ class Deck(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-
-# ## Card Model ##
-# # ID
-# # Name
-# # Type
-# # Colors
-# # CMC
 
 class Card(db.Model):
     __tablename__ = 'cards'
