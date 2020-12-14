@@ -9,11 +9,6 @@ ALGORITHMS = ['RS256']
 API_AUDIENCE = 'mtg'
 CLIENT_SECRET = 'oues1xfgBTGViGZTZApPnNsRNoZ59bzQX44blRAuV-apyBBWoyGTrG8TKxF2sVwD'
 
-# Auth0 login:
-# 'https://goatpig.us.auth0.com/authorize?audience=mtg&response_type=token&client_id=EbIojFFiQzS7Uk11e1I6Tb5s5y2rKzXH&redirect_uri=https://127.0.0.1:5000/'
-
-# print('we are in bizness')
-
 
 # Get the JWT from the Authorization header
 

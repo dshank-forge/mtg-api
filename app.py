@@ -14,15 +14,6 @@ def create_app(test_config=None):
     setup_db(app)
     cors = CORS(app)
 
-    # From Trivia API project
-    # @app.after_request
-    # def after_request(response):
-    #     response.headers.add('Access-Control-Allow-Headers',
-    #                          'Content-Type,Authorization,true')
-    #     response.headers.add('Access-Control-Allow-Methods',
-    #                          'GET,PATCH,POST,DELETE,OPTIONS')
-    #     return response
-
     @app.route('/')
     @requires_auth()  # No special role is needed to access this endpoint.
     def greeting():
