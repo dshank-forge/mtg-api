@@ -12,7 +12,7 @@ CLIENT_SECRET = 'oues1xfgBTGViGZTZApPnNsRNoZ59bzQX44blRAuV-apyBBWoyGTrG8TKxF2sVw
 # Auth0 login:
 # 'https://goatpig.us.auth0.com/authorize?audience=mtg&response_type=token&client_id=EbIojFFiQzS7Uk11e1I6Tb5s5y2rKzXH&redirect_uri=https://127.0.0.1:5000/'
 
-print('we are in bizness')
+# print('we are in bizness')
 
 
 # Get the JWT from the Authorization header
@@ -29,23 +29,6 @@ def get_token_auth_header():
         print(f'There was an exception:\n{e}')
         abort(401)
     return token
-
-
-# Check if the permission is in the payload
-
-
-def check_permissions(permission, payload):
-    try:
-        permissions_array = payload['permissions']
-        # print('permissions array: ' + str(permissions_array))
-        # print('permission:' + str(permission))
-        if permission not in permissions_array:
-            raise Exception(
-                'The specified permission is not in this permission set.')
-    except Exception as e:
-        print(f'There was an exception:\n{e}')
-        abort(401)
-    return True
 
 
 # The following function has been adapted from the Auth0 Docs - "Python API: Authorization" by Luciano Balmaceda
@@ -95,3 +78,38 @@ def verify_decode_jwt(token):
         abort(401)
 
     return payload
+
+
+# Check if the permission is in the payload
+
+
+def check_permissions(permission, payload):
+    try:
+        if permission == '':
+            return True
+        permissions_array = payload['permissions']
+        if permission not in permissions_array:
+            raise Exception(
+                'The specified permission is not in this permission set.')
+    except Exception as e:
+        print(f'There was an exception:\n{e}')
+        abort(401)
+    return True
+
+
+# This requires_auth decorator does the following:
+# Gets the JWT from the Auth header, verifies and decodes the JWT, checks if a given permission is in the JWT payload
+
+
+def requires_auth(permission=''):
+    def requires_auth_decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            print('inside the wrapper')
+            token = get_token_auth_header()
+            payload = verify_decode_jwt(token)
+            check_permissions(permission, payload)
+            return f(*args, **kwargs)
+
+        return wrapper
+    return requires_auth_decorator

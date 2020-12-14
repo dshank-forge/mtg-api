@@ -2,9 +2,9 @@ import json
 import os
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
-# from functools import wraps
 from flask_sqlalchemy import SQLAlchemy
 
+from auth import requires_auth
 from models import setup_db, Deck, Card
 
 
@@ -24,10 +24,12 @@ def create_app(test_config=None):
     #     return response
 
     @app.route('/')
+    @requires_auth()  # No special role is needed to access this endpoint.
     def greeting():
         return 'Welcome to Magic: The Gathering API'
 
     @app.route('/decks')
+    @requires_auth('get:decks')
     def get_decks():
         decks = Deck.query.all()
         decks_readable = [
@@ -36,6 +38,7 @@ def create_app(test_config=None):
         return jsonify(decks_readable)
 
     @app.route('/cards')
+    @requires_auth('get:cards')
     def get_cards():
         cards = Card.query.all()
         cards_readable = [
@@ -44,6 +47,7 @@ def create_app(test_config=None):
         return jsonify(cards_readable)
 
     @app.route('/cards', methods=['post'])
+    @requires_auth('post:cards')
     def post_card():
         data = json.loads(request.data)
         name = data.get('name', None)
@@ -62,6 +66,7 @@ def create_app(test_config=None):
         return jsonify('posted card successfully')
 
     @app.route('/cards/<int:id>', methods=['patch'])
+    @requires_auth('patch:cards')
     def update_card(id):
         try:
             working_card = Card.query.get(id)
@@ -97,6 +102,7 @@ def create_app(test_config=None):
         return f'updated card successfully: {working_card.name} - {working_card.type} - {working_card.colors} - {working_card.cmc}'
 
     @app.route('/cards/<int:id>', methods=['delete'])
+    @requires_auth('delete:cards')
     def delete_card(id):
         try:
             working_card = Card.query.get(id)
