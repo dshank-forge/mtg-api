@@ -90,5 +90,3 @@ details about what card was deleted.
 Response:
 deleted card successfully: 4 - polymorph
 
-
-Bookmark - Then tidy up edges and review rubric. Then refresh JWTs. Then DONE!
