@@ -106,12 +106,3 @@ updated card successfully: polymorph - sorcery - blue - 4
 details about what card was deleted.
 #### Response:
 deleted card successfully: 4 - polymorph
-
-
-Bookmark - 
-1. Make changes recommended by reviewer. 
-2. Test locally. 
-3. Generate new JWTs. 
-4. Configure Heroku env variables and local env variables (JWTs). 
-5. Deploy to Heroku. Test Heroku. 
-6. Resubmit. Remove this list.
