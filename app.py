@@ -1,8 +1,9 @@
 import json
 import os
-from flask import Flask, request, abort, jsonify
+from flask import Flask, request, abort, jsonify, render_template
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from livereload import Server
 
 from auth import requires_auth
 from models import setup_db, Deck, Card
@@ -15,11 +16,12 @@ def create_app(test_config=None):
     cors = CORS(app)
 
     @app.route('/')
-    @requires_auth()
+    # @requires_auth()
     def greeting():
         """Routes user to a welcome page."""
 
-        return 'Welcome to Magic: The Gathering API'
+        return render_template('home.html')
+        # return 'Welcome to Magic: The Gathering API'
 
     @app.route('/decks')
     @requires_auth('get:decks')
@@ -204,4 +206,7 @@ def create_app(test_config=None):
 app = create_app()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    # app.run(host='0.0.0.0', port=8080, debug=True)
+    server = Server(app.wsgi_app)
+    server.watch('/Users/david/Documents/Programming/Udacity/Full_Stack_Developer/Unit_6-Capstone/mtg-api/')
+    server.serve()
