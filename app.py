@@ -23,6 +23,12 @@ def create_app(test_config=None):
         return render_template('home.html')
         # return 'Welcome to Magic: The Gathering API'
 
+    @app.route('/contact')
+    def contact_page():
+        """Routes user to contact info page."""
+        
+        return render_template('contact.html') 
+
     @app.route('/decks')
     @requires_auth('get:decks')
     def get_decks():
@@ -207,6 +213,7 @@ app = create_app()
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=8080, debug=True)
+    # app.run(host='localhost', port=8080, debug=True)
     server = Server(app.wsgi_app)
     server.watch('/Users/david/Documents/Programming/Udacity/Full_Stack_Developer/Unit_6-Capstone/mtg-api/')
     server.serve()
