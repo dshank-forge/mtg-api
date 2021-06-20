@@ -106,3 +106,5 @@ updated card successfully: polymorph - sorcery - blue - 4
 details about what card was deleted.
 #### Response:
 deleted card successfully: 4 - polymorph
+
+Bookmark- Making Get requests to scryfall API

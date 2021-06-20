@@ -1,5 +1,7 @@
 # run using: source setup.sh
 export DATABASE_URL='postgres://localhost:5432/magic_the_gathering'
+export FLASK_APP='app.py'
+export FLASK_ENV='development'
 
 export AUTH0_DOMAIN='goatpig.us.auth0.com'
 export ALGORITHMS='RS256'

@@ -1,9 +1,11 @@
 import json
 import os
+import requests
 from flask import Flask, request, abort, jsonify, render_template
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from livereload import Server
+
 
 from auth import requires_auth
 from models import setup_db, Deck, Card
@@ -19,6 +21,9 @@ def create_app(test_config=None):
     # @requires_auth()
     def greeting():
         """Routes user to a welcome page."""
+        random_card = requests.get('https://api.scryfall.com/cards/random').json()
+        print('hello')
+        print(random_card)
 
         return render_template('home.html')
         # return 'Welcome to Magic: The Gathering API'
@@ -26,7 +31,7 @@ def create_app(test_config=None):
     @app.route('/contact')
     def contact_page():
         """Routes user to contact info page."""
-        
+
         return render_template('contact.html') 
 
     @app.route('/decks')
